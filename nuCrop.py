@@ -1,0 +1,347 @@
+from tkinter import *
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+import skimage.io as skio
+import matplotlib.image as pltim
+from os import remove
+import numpy as np
+from matplotlib import pyplot as plt
+from skimage.color import rgb2gray
+from PIL import Image
+from math import ceil
+
+
+class Browse:
+    def __init__(self, master):
+        self.path = StringVar()
+        self.path.set("No file selected")
+        self.validation_message = StringVar()
+        self.validation_message.set("Waiting for validation")
+        self.chambers_gray = np.array([])
+        self.chamber1 = np.ones((3500, 1166, 3))
+        self.chamber2 = np.ones((3500, 1166, 3))
+        self.chamber3 = np.ones((3500, 1166, 3))
+        self.chamber4 = np.ones((3500, 1166, 3))
+        self.chamber5 = np.ones((3500, 1166, 3))
+        self.chamber6 = np.ones((3500, 1166, 3))
+
+        self.frame1 = Frame(master, pady=1, padx=10)
+        self.frame1.pack(side=TOP, pady=20, fill=X)
+
+        self.frame2 = Frame(master, pady=5, padx=10)
+        self.frame2.pack(side=TOP, fill=X)
+
+        self.frame3 = Frame(master, pady=5, padx=0)
+        self.frame3.pack(side=TOP)
+
+        self.browse_button = Button(self.frame1, text="Browse", command=self.file_path)
+        self.browse_button.pack(side=LEFT, padx=10)
+
+        self.path_label = Entry(self.frame1, textvariable=self.path, state="readonly", width=50, justify='left')
+        self.path_label.pack(side=LEFT, padx=10, fill=X)
+
+        self.validate_label = Entry(self.frame2, textvariable=self.validation_message, state="readonly", justify='center')
+        self.validate_label.pack(side=BOTTOM, fill=X)
+
+        self.crop_button = Button(self.frame3, text="Crop", command=self.crop_files, state=DISABLED)
+        self.crop_button.pack(side=LEFT, padx=4)
+
+        self.validate_button = Button(self.frame3, text="Validate", command=self.validate, state=DISABLED)
+        self.validate_button.pack(side=LEFT, padx=4)
+
+        self.save_button = Button(self.frame3, text="Save", command=self.save_files, state=DISABLED)
+        self.save_button.pack(side=LEFT, padx=4)
+
+    def file_path(self):
+        self.path.set(askopenfilename())  # show an "Open" dialog box and return the path to the selected file
+        self.chamber1 = np.ones((3500, 1166, 3))
+        self.chamber2 = np.ones((3500, 1166, 3))
+        self.chamber3 = np.ones((3500, 1166, 3))
+        self.chamber4 = np.ones((3500, 1166, 3))
+        self.chamber5 = np.ones((3500, 1166, 3))
+        self.chamber6 = np.ones((3500, 1166, 3))
+        self.crop_button.config(state="active")
+
+    def save_files(self):
+        # create a variable "path", which stores a string with the path from the original image file
+        # removing the file's extension
+        self.crop_button.config(state="disabled")
+        self.validate_button.config(state="disabled")
+        self.save_button.config(state="active")
+        path = self.path_label.get()
+        path_cut = path.find('.', len(path) - 5)
+        path = path[:path_cut]
+        # save chamber 1 as .png file, convert to .jpg and delete png, append _chamberN.png to the path file name
+        if np.mean(rgb2gray(self.chamber1)) <= 0.979:
+            path1 = path + "_chamber1.png"
+            pltim.imsave(path1, self.chamber1)
+            convert1 = Image.open(path1)
+            convert1 = convert1.convert('RGB')
+            path11 = path + "_chamber1.jpg"
+            convert1.save(path11)
+            remove(path1)
+        else:
+            self.chamber2 = np.array([])
+        # save chamber 2 as a .jpg file
+        if np.mean(rgb2gray(self.chamber2)) <= 0.979:
+            path2 = path + "_chamber2.png"
+            pltim.imsave(path2, self.chamber2)
+            convert2 = Image.open(path2)
+            convert2 = convert2.convert('RGB')
+            path22 = path + "_chamber2.jpg"
+            convert2.save(path22)
+            remove(path2)
+        else:
+            self.chamber2 = np.array([])
+        # save chamber 3 as a .jpg file
+        if np.mean(rgb2gray(self.chamber3)) <= 0.979:
+            path3 = path + "_chamber3.png"
+            pltim.imsave(path3, self.chamber3)
+            convert3 = Image.open(path3)
+            convert3 = convert3.convert('RGB')
+            path33 = path + "_chamber3.jpg"
+            convert3.save(path33)
+            remove(path3)
+        else:
+            self.chamber3 = np.array([])
+        # save chamber 4 as a .jpg file
+        if np.mean(rgb2gray(self.chamber4)) <= 0.979:
+            path4 = path + "_chamber4.png"
+            pltim.imsave(path4, self.chamber4)
+            convert4 = Image.open(path4)
+            convert4 = convert4.convert('RGB')
+            path44 = path + "_chamber4.jpg"
+            convert4.save(path44)
+            remove(path4)
+        else:
+            self.chamber4 = np.array([])
+        # save chamber 5 as a .jpg file
+        if np.mean(rgb2gray(self.chamber5)) <= 0.979:
+            path5 = path + "_chamber5.png"
+            pltim.imsave(path5, self.chamber5)
+            convert5 = Image.open(path5)
+            convert5 = convert5.convert('RGB')
+            path55 = path + "_chamber5.jpg"
+            convert5.save(path55)
+            remove(path5)
+        else:
+            self.chamber5 = np.array([])
+        # save chamber 6 as a .jpg file
+        if np.mean(rgb2gray(self.chamber6)) <= 0.979:
+            path6 = path + "_chamber6.png"
+            pltim.imsave(path6, self.chamber6)
+            convert6 = Image.open(path6)
+            convert6 = convert6.convert('RGB')
+            path66 = path + "_chamber6.jpg"
+            convert6.save(path66)
+            remove(path6)
+        else:
+            self.chamber6 = np.array([])
+
+        self.save_button.config(state="disabled")
+
+    def crop_files(self):
+
+        chambers = skio.imread(self.path_label.get())
+        chambers = np.array(chambers)
+        chambers_gray = rgb2gray(chambers)
+        self.chambers_gray = chambers_gray
+
+        # left1 index
+        chamber_mean = np.array([0])
+        start = 0
+        while max(chamber_mean) < 0.6:
+            chamber_mean = np.mean(chambers_gray[::, start:start + 10], 0)
+            if max(chamber_mean) >= 0.6:
+                self.crop_left1 = start + 5
+                break
+            start = start + 10
+
+        # left2 index
+        chamber_mean = np.array([0])
+        start = ceil(np.shape(chambers_gray)[1] / 2)
+        while max(chamber_mean) < 0.6:
+            chamber_mean = np.mean(chambers_gray[::, start:start + 10], 0)
+            if max(chamber_mean) >= 0.6:
+                self.crop_left2 = start + 5
+                break
+            start = start + 10
+
+        # top1 index
+        chamber_mean = np.array([0])
+        start = 0
+        while max(chamber_mean) < 0.6:
+            chamber_mean = np.mean(chambers_gray[start:start + 10, ceil(np.shape(chambers_gray)[1] / 2):], 1)
+            if max(chamber_mean) >= 0.6:
+                self.crop_top1 = start + 5
+                self.chamber1 = chambers[self.crop_top1:self.crop_top1 + 3500,
+                                self.crop_left2:self.crop_left2 + 1166]
+                self.chamber4 = chambers[self.crop_top1:self.crop_top1 + 3500,
+                                self.crop_left1:self.crop_left1 + 1166]
+                break
+            start = start + 10
+            if start >= np.shape(chambers_gray)[0]:
+                self.crop_top1 = 0
+                break
+        # check right sides for black stripes on chamber 1
+        chamber1_gray = rgb2gray(self.chamber1)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber1_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber1_gray[::, last_col-10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber1 = self.chamber1[::, :last_col-10]
+                break
+            last_col = last_col - 10
+        # check right sides for black stripes on chamber 4
+        chamber4_gray = rgb2gray(self.chamber4)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber4_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber4_gray[::, last_col - 10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber4 = self.chamber4[::, :last_col - 10]
+                break
+            last_col = last_col - 10
+
+        # top2 index
+        chamber_mean = np.array([1])
+        start = self.crop_top1 + 3500
+        while max(chamber_mean) > 0.99:
+            chamber_mean = np.mean(chambers_gray[start:start + 50, self.crop_left2:self.crop_left2 + 1166], 1)
+            if max(chamber_mean) <= 0.99:
+                self.crop_top2 = start
+                self.chamber2 = chambers[self.crop_top2:self.crop_top2 + 3500,
+                                self.crop_left2:self.crop_left2 + 1166]
+                self.chamber5 = chambers[self.crop_top2:self.crop_top2 + 3500,
+                                self.crop_left1:self.crop_left1 + 1166]
+                break
+            start = start + 50
+
+            if start >= np.shape(chambers_gray)[0]:
+                self.crop_top2 = self.crop_top1 + 3500
+                break
+        # check right sides for black stripes on chamber 2
+        chamber2_gray = rgb2gray(self.chamber2)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber2_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber2_gray[::, last_col - 10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber2 = self.chamber2[::, :last_col - 10]
+                break
+            last_col = last_col - 10
+
+        # check right sides for black stripes on chamber 5
+        chamber5_gray = rgb2gray(self.chamber5)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber5_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber5_gray[::, last_col - 10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber5 = self.chamber5[::, :last_col - 10]
+                break
+            last_col = last_col - 10
+
+        # top3 index
+        chamber_mean = np.array([1])
+        start = self.crop_top2 + 3500
+        while chamber_mean > 0.985:
+            chamber_mean = np.mean(chambers_gray[start:start + 3500, self.crop_left2:self.crop_left2 + 1166])
+            if chamber_mean < 0.985:
+                self.crop_top3 = start
+                self.chamber3 = chambers[self.crop_top3:self.crop_top3 + 3500,
+                                self.crop_left2:self.crop_left2 + 1166]
+                self.chamber6 = chambers[self.crop_top3:self.crop_top3 + 3500,
+                                self.crop_left1:self.crop_left1 + 1166]
+                break
+            start = start + 50
+            condition = start + 3500
+            if condition >= np.shape(chambers_gray)[0]:
+                self.chamber3 = np.ones((3500, 1166, 3))
+                self.chamber6 = np.ones((3500, 1166, 3))
+                break
+            if start >= np.shape(chambers_gray)[0]:
+                self.crop_top3 = self.crop_top2 + 3500
+                self.chamber3 = np.ones((3500, 1166, 3))
+                break
+        # check right sides for black stripes on chamber 3
+        chamber3_gray = rgb2gray(self.chamber3)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber3_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber3_gray[::, last_col - 10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber3 = self.chamber3[::, :last_col - 10]
+                break
+            last_col = last_col - 10
+        # check bottom sides for black stripes con chamber 3
+        chamber3_gray = rgb2gray(self.chamber3)
+        chamber_mean = np.array([0])
+        last_row = np.shape(chamber3_gray)[0]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber3_gray[last_row-10:last_row, ::], 1)
+            if max(chamber_mean) >= 0.2:
+                self.chamber3 = self.chamber3[:last_row-10, ::]
+                break
+            last_row = last_row - 10
+
+        # check right sides for black stripes on chamber 6
+        chamber6_gray = rgb2gray(self.chamber6)
+        chamber_mean = np.array([0])
+        last_col = np.shape(chamber6_gray)[1]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber6_gray[::, last_col - 10:last_col], 0)
+            if max(chamber_mean) >= 0.2:
+                self.chamber6 = self.chamber6[::, :last_col - 10]
+                break
+            last_col = last_col - 10
+        # check bottom sides for black stripes con chamber 6
+        chamber6_gray = rgb2gray(self.chamber6)
+        chamber_mean = np.array([0])
+        last_row = np.shape(chamber6_gray)[0]
+        while max(chamber_mean) < 0.2:
+            chamber_mean = np.mean(chamber6_gray[last_row - 10:last_row, ::], 1)
+            if max(chamber_mean) >= 0.2:
+                self.chamber6 = self.chamber6[:last_row - 10, ::]
+                break
+            last_row = last_row - 10
+
+        self.validate_button.config(state="active")
+        self.save_button.config(state="active")
+
+    def validate(self):
+        counter = 0
+        mean_chamber1, mean_chamber2 = np.mean(rgb2gray(self.chamber1)), np.mean(rgb2gray(self.chamber2))
+        mean_chamber3, mean_chamber4 = np.mean(rgb2gray(self.chamber3)), np.mean(rgb2gray(self.chamber4))
+        mean_chamber5, mean_chamber6 = np.mean(rgb2gray(self.chamber5)), np.mean(rgb2gray(self.chamber6))
+        if mean_chamber1 <= 0.975:
+            counter += 1
+        if mean_chamber2 <= 0.975:
+            counter += 1
+        if mean_chamber3 <= 0.975:
+            counter += 1
+        if mean_chamber4 <= 0.975:
+            counter += 1
+        if mean_chamber5 <= 0.975:
+            counter += 1
+        if mean_chamber6 <= 0.975:
+            counter += 1
+        if counter == 0:
+            self.validation_message.set("The image has no chambers. Please enter a valid image")
+        else:
+            self.validation_message.set("The image has {0} chambers".format(counter))
+
+
+root = Tk()
+b = Browse(root)
+root.minsize(width=400, height=130)
+root.maxsize(width=400, height=130)
+root.columnconfigure(0, minsize=200)
+root.columnconfigure(0, weight=1)
+root.columnconfigure(1, minsize=200)
+root.columnconfigure(1, weight=1)
+root.rowconfigure(0, weight=2)
+root.rowconfigure(1, weight=2)
+root.rowconfigure(2, weight=2)
+root.rowconfigure(3, weight=2)
+root.mainloop()
