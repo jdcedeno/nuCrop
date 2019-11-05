@@ -1,10 +1,9 @@
 from tkinter import *
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.filedialog import askopenfilename
 import skimage.io as skio
 import matplotlib.image as pltim
 from os import remove
 import numpy as np
-from matplotlib import pyplot as plt
 from skimage.color import rgb2gray
 from PIL import Image
 from math import ceil
