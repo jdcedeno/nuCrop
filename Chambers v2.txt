@@ -313,17 +313,17 @@ class Browse:
         mean_chamber1, mean_chamber2 = np.mean(rgb2gray(self.chamber1)), np.mean(rgb2gray(self.chamber2))
         mean_chamber3, mean_chamber4 = np.mean(rgb2gray(self.chamber3)), np.mean(rgb2gray(self.chamber4))
         mean_chamber5, mean_chamber6 = np.mean(rgb2gray(self.chamber5)), np.mean(rgb2gray(self.chamber6))
-        if mean_chamber1 <= 0.975:
+        if mean_chamber1 <= 0.979:
             counter += 1
-        if mean_chamber2 <= 0.975:
+        if mean_chamber2 <= 0.979:
             counter += 1
-        if mean_chamber3 <= 0.975:
+        if mean_chamber3 <= 0.979:
             counter += 1
-        if mean_chamber4 <= 0.975:
+        if mean_chamber4 <= 0.979:
             counter += 1
-        if mean_chamber5 <= 0.975:
+        if mean_chamber5 <= 0.979:
             counter += 1
-        if mean_chamber6 <= 0.975:
+        if mean_chamber6 <= 0.979:
             counter += 1
         if counter == 0:
             self.validation_message.set("The image has no chambers. Please enter a valid image")
